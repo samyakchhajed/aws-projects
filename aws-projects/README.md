@@ -1,0 +1,40 @@
+# AWS Projects Portfolio
+
+This directory contains case studies detailing the deliberate selection, refactoring, and evolution of AWS compute models. The progression illustrates how changes to a workload's execution contract dictate different architectural decisions—moving from virtual servers to serverless, and finally to container orchestration.
+
+---
+
+## Compute Choice Evolution Matrix
+
+The table below outlines how the workload contracts and architecture evolved across the three projects:
+
+| Aspect | Project 1: EC2 by Necessity | Project 2: Lambda Daily Computation | Project 3: ECS/Fargate Tasks |
+| :--- | :--- | :--- | :--- |
+| **Compute Choice** | Amazon EC2 (t3.micro) | AWS Lambda (Python 3.11) | Amazon ECS on AWS Fargate |
+| **Workload Type** | Persistent stream ingestion | Bounded daily computation | Mixed batch & time-bound streaming |
+| **State Model** | Stateful (in-memory rolling state) | Stateless (state externalized to DynamoDB) | Stateless (artifacts saved to S3) |
+| **Execution Window** | Long-running (persistent WebSocket) | Bounded (< 30 seconds) | Bounded (exits after unit of work) |
+| **Retry Semantics** | Unsafe | Safe (idempotent executions) | Final (no auto-restart on exit) |
+| **Control Plane** | AWS Systems Manager (SSM) | Amazon EventBridge Scheduler | Native ECS Task Invocation |
+
+---
+
+## Project Summaries
+
+### 1. [Project 1: EC2 by Necessity](./Project-1-EC2-by-necessity/)
+A case study on compute selection under strict non-negotiable constraints.
+* **Core Problem**: Managing a persistent WebSocket connection that processes in-memory rolling state over execution windows exceeding serverless timeouts.
+* **Decision**: Selected raw EC2 reluctantly by necessity to maintain full execution continuity. AWS Lambda (due to timeout and state limitations) and ECS (due to unnecessary orchestration overhead) were rejected.
+* **Control plane**: Managed via AWS Systems Manager (SSM) Run Command to avoid open SSH access.
+
+### 2. [Project 2: Lambda Daily Computation](./Project-2-Lambda-daily-computation/)
+A continuation of Project 1, showing how redesigning the execution contract makes serverless the correct choice.
+* **Core Problem**: Refactoring the previous stateful, long-running system into a stateless scheduler-driven model.
+* **Decision**: Redesigned the system to externalize execution state to Amazon DynamoDB and output immutable JSON files to Amazon S3. 
+* **Lambda Earned**: With the workload contract refactored to be short, stateless, and idempotent, AWS Lambda became the correct choice, triggered automatically by EventBridge.
+
+### 3. [Project 3: Orchestrated System (ECS / Fargate)](./Project-3-Orchestrated-System-ECS-Fargate/)
+Managing multiple batch and streaming workloads that exceed Lambda limits but do not require persistent EC2 hosts.
+* **Core Problem**: Running time-bound WebSocket streaming tasks and data analytics tasks that run to completion and exit.
+* **Decision**: Deployed containers as independent Amazon ECS Tasks on AWS Fargate.
+* **Architecture**: A single multi-role Docker image configuration-driven via environment variables, writing final data outputs to S3, with execution validated via CloudWatch logs.
