@@ -2,16 +2,16 @@
 
 ## Overview
 
-This project is a **compute selection and lifecycle discipline case study**, not a trading or ML system.  
-Its purpose is to demonstrate **why EC2 is the correct choice only when a workload contract forces it**, and how to operate such a workload with **explicit control, bounded cost, and zero hidden automation**.
+This project is a compute selection and lifecycle discipline case study, not a trading or ML system.  
+Its purpose is to evaluate compute options against a workload requiring long-running execution, persistent in-memory state, a continuous WebSocket connection, and explicit operator-controlled lifecycle management.
 
-The project intentionally prioritizes **engineering judgment** over service convenience.
+The project intentionally prioritizes engineering judgment over service convenience.
 
 ---
 
 ## Workload Contract
 
-The following constraints existed **before** any compute decision:
+The following constraints existed before any compute decision:
 
 - **Execution model:** Single long-running process
 - **Runtime:** Bounded, but longer than Lambda limits
@@ -36,10 +36,10 @@ The application logic is included under `/code` only to make the workload contra
 
 ---
 
-## What This Project Proves
+## Engineering Focus
 
-- Ability to **reject Lambda and ECS correctly**
-- Clear understanding of **state vs execution semantics**
+- Comparison of EC2, Lambda, and ECS against explicit workload constraints
+- Clear understanding of state vs execution semantics
 - Explicit lifecycle and cost control
 - Separation of provisioning, execution, and observability
 - Discipline in avoiding unnecessary abstractions

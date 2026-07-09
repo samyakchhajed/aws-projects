@@ -2,19 +2,19 @@
 
 ## Overview
 
-This repository contains a **governed AWS operator toolkit** designed for **safe visibility, controlled operations, hygiene reasoning, and final account cleanup**. The tools are intentionally conservative, human-in-the-loop, and optimized to prevent accidental cost leaks or destructive mistakes.
+This repository contains a **governed AWS operator toolkit** designed for safe visibility, controlled operations, hygiene reasoning, and final supported-resource cleanup. The tools are intentionally conservative, human-in-the-loop, and optimized to prevent accidental cost leaks or destructive mistakes.
 
-This is **not automation-first** tooling. It is **operator-first** tooling.
+This is not automation-first tooling. It is operator-first tooling.
 
 ---
 
 ## Core Design Principles
 
-* **Explicit intent over speed** 
-* **Read-only before action** 
-* **No silent defaults or background execution**
-* **Strong confirmations for irreversible actions**
-* **Explicit AWS profile and region usage only**
+* Explicit intent over speed
+* Read-only before action
+* No silent defaults or background execution
+* Strong confirmations for irreversible actions
+* Explicit AWS profile and region usage only
 
 Each script has a **clear boundary**. Overlap is avoided by design.
 
@@ -38,9 +38,9 @@ Each script has a **clear boundary**. Overlap is avoided by design.
 
 **Use case:** Deciding *whether* something should still exist.
 
-* Adds **time-based context** to EC2, S3, and CloudWatch resources
+* Adds time-based context to EC2, S3, and CloudWatch resources
 * Flags abandoned, idle, or hygiene-risk resources using configurable age thresholds
-* Produces **signals**, not decisions
+* Produces signals, not decisions
 
 **Never does:** Delete, stop, or modify resources
 
@@ -82,11 +82,11 @@ Each script has a **clear boundary**. Overlap is avoided by design.
 
 ---
 
-### 6. `aws_shutdown.py` — Final Account Cleanup Protocol
+### 6. `aws_shutdown.py` — Final Supported-resource Cleanup Protocol
 
-**Use case:** Forcing a **zero-cost** AWS account state.
+**Use case:** Cleaning up supported resources across enabled regions to reduce residual infrastructure costs.
 
-* Scans **all enabled regions** dynamically
+* Scans all enabled regions dynamically
 * Groups resources into supervised, batch-approved cleanup phases
 * Respects `KeepUntil` tags as safety overrides
 
@@ -108,7 +108,7 @@ Each step answers a different question:
 * *Is this still intentional?*
 * *What exists and who can access it?*
 * *What should I operate?*
-* *How do I guarantee zero surprise cost?*
+* *How do I reduce the risk of forgotten resources and residual infrastructure costs?*
 
 ---
 
@@ -129,12 +129,12 @@ This toolkit exists to address those gaps.
 
 ### What This Toolkit Provides Instead
 
-* **Explicit context first** (profile, region, identity printed every run)
-* **Read-only diagnostics and reasoning** before any action
-* **High-friction confirmations** for irreversible operations
-* **Age-based signals** to answer “Is this still intentional?”
-* **Single-resource, scoped actions** instead of bulk clicks
-* **Final-protocol cleanup** to guarantee zero surprise costs
+* Explicit context first (profile, region, identity printed every run)
+* Read-only diagnostics and reasoning before any action
+* High-friction confirmations for irreversible operations
+* Age-based signals to answer “Is this still intentional?”
+* Single-resource, scoped actions instead of bulk clicks
+* Supervised multi-region cleanup for supported resource types
 
 ### Design Tradeoff (Intentional)
 

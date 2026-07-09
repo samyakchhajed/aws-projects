@@ -1,6 +1,6 @@
 # aws-projects
 
-This repository serves as a portfolio for AWS architectural experiments, cloud compute case studies, and safe account operational tools. It is split into two primary directories: one focused on compute selection case studies, and the other on a governed operator toolkit.
+This repository contains AWS compute selection case studies and operator-focused tools for account visibility, controlled operations, resource hygiene, and cleanup. It is split into two primary directories: one focused on compute selection case studies, and the other on a governed operator toolkit.
 
 ---
 
@@ -28,7 +28,7 @@ aws-projects/
 ### 1. [aws-projects](./aws-projects/)
 A progression of three projects demonstrating compute selection decisions based strictly on workload requirements and execution constraints:
 * **Project 1: EC2 by Necessity** – A case study on why EC2 was selected over Lambda and ECS due to long-running, stateful connection requirements.
-* **Project 2: Lambda Daily Computation** – A continuation of Project 1 showing how the workload was redesigned to externalize state and make AWS Lambda the correct compute choice.
+* **Project 2: Lambda Daily Computation** – A continuation of Project 1 showing how the workload was redesigned to externalize state and become suitable for short, retry-safe Lambda execution.
 * **Project 3: Orchestrated System (ECS/Fargate)** – Running time-bound batch and streaming tasks that require independent compute containers but exceed Lambda's execution limits.
 
 ### 2. [aws-tools](./aws-tools/)
@@ -38,4 +38,4 @@ A suite of operator-first, conservative Python scripts designed to safely manage
 * **`aws_iam_manager.py`** – Safe structural visibility into IAM blast radius (Read-Only).
 * **`aws_ec2_manager.py`** – Safe, manual-confirmation EC2 operations.
 * **`aws_s3_manager.py`** – Guarded S3 bucket inspection, upload, and deletion.
-* **`aws_shutdown.py`** – Multi-region final account cleanup protocol to guarantee zero-cost state.
+* **`aws_shutdown.py`** – Supervised multi-region cleanup of supported AWS resources using explicit authorization-code safeguards.
